@@ -219,4 +219,49 @@ class TenantController extends Controller
         //     return redirect()->back()->with('error', 'Error loading dashboard data: ' . $e->getMessage());
         // }
     }
+
+    public function showTenant(Tenant $tenant)
+    {
+        // try {
+        // $tenants = Tenant::with(['businesses'])->get();
+
+        $tenantData = [];
+
+        // foreach ($tenants as $tenant) {
+        // Get business progress data using Eloquent
+        $businessProgress = [
+            'products' => Product::where('tenant_id', $tenant->id)->count(),
+            'sales' => Sale::where('tenant_id', $tenant->id)->count(),
+            'customers' => Customer::where('tenant_id', $tenant->id)->count(),
+            'revenue' => Sale::where('tenant_id', $tenant->id)->sum('total_amount'),
+        ];
+
+        // Get recent sales using Eloquent
+        $recentSales = Sale::with(['customer', 'saleItems'])
+            ->where('tenant_id', $tenant->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        // Get inventory status - products below reorder level
+        $inventoryStatus = Product::where('tenant_id', $tenant->id)
+            ->whereHas('variants', function ($query) {
+                $query->whereColumn('current_stock', '<', 'products.reorder_level');
+            })
+            ->count();
+
+        $tenantData[] = [
+            'tenant' => $tenant,
+            'businessProgress' => $businessProgress,
+            'recentSales' => $recentSales,
+            'inventoryStatus' => $inventoryStatus
+        ];
+        // }
+
+        return view('tenant.dashboard', compact('tenantData'));
+        // } catch (\Exception $e) {
+        //     Log::error('Dashboard error: ' . $e->getMessage());
+        //     return redirect()->back()->with('error', 'Error loading dashboard data: ' . $e->getMessage());
+        // }
+    }
 }

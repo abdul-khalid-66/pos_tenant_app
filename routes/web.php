@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified', 'role:super-admin'])->group(function () {
         Route::get('/{tenant}/edit', [TenantController::class, 'edit'])->name('tenants.edit');
         Route::put('/{tenant}', [TenantController::class, 'update'])->name('tenants.update');
         Route::delete('/{tenant}', [TenantController::class, 'destroy'])->name('tenants.destroy');
-        // Route::get('/{tenant}/dashboard', [TenantController::class, 'dashboard'])->name('tenants.dashboard');
+        Route::get('/{tenant}/dashboard', [TenantController::class, 'dashboard'])->name('tenants.dashboard');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
