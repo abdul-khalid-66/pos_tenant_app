@@ -442,18 +442,18 @@ class SaleController extends Controller
             'items.variant',
             'payments.paymentMethod'
         ]);
-        
+
         $business = Business::first();
-        
+
         // Use 'Pdf' instead of 'PDF'
         $pdf = Pdf::loadView('admin.sales.invoice-pdf', [
             'sale' => $sale,
             'business' => $business
         ]);
-        
+
         $pdf->setPaper('Latter', 'portrait');
         $filename = 'invoice-' . $sale->invoice_number . '.pdf';
-        
+
         return $pdf->download($filename);
     }
 
