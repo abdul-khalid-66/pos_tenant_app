@@ -2,9 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tenant;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\PaymentMethod;
+use App\Models\User;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use App\Models\Tenant;
+use App\Models\Business;
+use Illuminate\Support\Facades\Hash;
 
 class TenantSeeder extends Seeder
 {
@@ -13,13 +18,46 @@ class TenantSeeder extends Seeder
      */
     public function run(): void
     {
-        $t1 = Tenant::create(['id' => 1, 'name' => 'tenant1']);
-        $t1->domains()->create(['domain' => 'tenant1.localhost']);
 
-        $t2 = Tenant::create(['id' => 2, 'name' => 'tenant2']);
-        $t2->domains()->create(['domain' => 'tenant2.localhost']);
 
-        $t3 = Tenant::create(['id' => 3, 'name' => 'tenant3']);
-        $t3->domains()->create(['domain' => 'tenant3.localhost']);
+        Role::create(['name' => "super-admin"]);
+        Role::create(['name' => "admin"]);
+        Role::create(['name' => "seller"]);
+        Role::create(['name' => "user"]);
+
+        $tenant = Tenant::create(['id' => 1, 'name' => 'tenant3']);
+        $tenant->domains()->create(['domain' => 'tenant3.localhost']);
+
+        $user = User::create([
+            'name' => 'mdautos',
+            'email' => 'mdautos@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('12345678'),
+            'remember_token' => null,
+            'tenant_id' => $tenant->id,
+        ]);
+
+        $user->assignRole("super-admin");
+
+
+
+
+        PaymentMethod::create([
+            'tenant_id' => 1,
+            'name' => 'Cash',
+            'code' => 'CASH',
+            'type' => 'cash',
+            'is_active' => true,
+            'settings' => null
+        ]);
+
+        PaymentMethod::create([
+            'tenant_id' => 1,
+            'name' => 'Bank Transfer',
+            'code' => 'BANK',
+            'type' => 'bank',
+            'is_active' => true,
+            'settings' => null
+        ]);
     }
 }
