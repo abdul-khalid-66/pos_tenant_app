@@ -88,6 +88,8 @@ class TenantController extends Controller
             'email_verified_at' => now(),
         ]);
 
+        $admin->hasRole('admin');
+
         DB::commit();
 
         return redirect()->route('tenants.index')
@@ -130,7 +132,6 @@ class TenantController extends Controller
 
         DB::beginTransaction();
 
-        // try {
         $tenant->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
@@ -148,12 +149,6 @@ class TenantController extends Controller
 
         return redirect()->route('tenants.index')
             ->with('success', 'Tenant updated successfully.');
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()
-        //         ->with('error', 'Error updating tenant: ' . $e->getMessage())
-        //         ->withInput();
-        // }
     }
 
     public function destroy(Tenant $tenant)
@@ -214,21 +209,11 @@ class TenantController extends Controller
         }
 
         return view('tenant.dashboard', compact('tenantData'));
-        // } catch (\Exception $e) {
-        //     Log::error('Dashboard error: ' . $e->getMessage());
-        //     return redirect()->back()->with('error', 'Error loading dashboard data: ' . $e->getMessage());
-        // }
     }
 
     public function showTenant(Tenant $tenant)
     {
-        // try {
-        // $tenants = Tenant::with(['businesses'])->get();
-
         $tenantData = [];
-
-        // foreach ($tenants as $tenant) {
-        // Get business progress data using Eloquent
         $businessProgress = [
             'products' => Product::where('tenant_id', $tenant->id)->count(),
             'sales' => Sale::where('tenant_id', $tenant->id)->count(),
@@ -256,12 +241,7 @@ class TenantController extends Controller
             'recentSales' => $recentSales,
             'inventoryStatus' => $inventoryStatus
         ];
-        // }
 
         return view('tenant.dashboard', compact('tenantData'));
-        // } catch (\Exception $e) {
-        //     Log::error('Dashboard error: ' . $e->getMessage());
-        //     return redirect()->back()->with('error', 'Error loading dashboard data: ' . $e->getMessage());
-        // }
     }
 }
