@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-tenant-app-layout>
     @push('css')
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
@@ -277,4 +277,4 @@
             });
         </script>
     @endpush
-</x-app-layout>
+</x-tenant-app-layout>
