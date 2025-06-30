@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-tenant-app-layout>
     @push('css')
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
@@ -83,7 +83,7 @@
                                         <label>Default Currency</label>
                                         <select class="form-control" name="default_currency">
                                             @foreach(config('currencies') as $code => $currency)
-                                                <option value="{{ $code }}" {{ (old('default_currency', $settings['default_currency'] ?? 'Rs') == $code ? 'selected' : '' }}>
+                                                <option value="{{ $code }}" {{ (old('default_currency', $settings['default_currency'] ?? 'Rs') == $code) ? 'selected' : '' }}>
                                                     {{ $currency['name'] }} ({{ $currency['symbol'] }})
                                                 </option>
                                             @endforeach
@@ -165,4 +165,4 @@
         });
     </script>
     @endpush
-</x-app-layout>
+</x-tenant-app-layout>

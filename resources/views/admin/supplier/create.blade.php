@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-tenant-app-layout>
     @push('css')
         <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.ico') }}" />
         <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
@@ -95,4 +95,4 @@
         <!-- app JavaScript -->
         <script src="{{ asset('backend/assets/js/app.js') }}"></script>
     @endpush
-</x-app-layout>
+</x-tenant-app-layout>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-tenant-app-layout>
     @push('css')
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend-plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('backend/assets/css/backend.css?v=1.0.0') }}">
@@ -38,7 +38,7 @@
                                         <label>Timezone</label>
                                         <select class="form-control" name="timezone">
                                             @foreach(timezone_identifiers_list() as $tz)
-                                                <option value="{{ $tz }}" {{ (old('timezone', $settings['timezone'] ?? 'UTC') == $tz ? 'selected' : '' }}>
+                                                <option value="{{ $tz }}" {{ (old('timezone', $settings['timezone'] ?? 'UTC') == $tz ? 'selected' : '') }}>
                                                     {{ $tz }}
                                                 </option>
                                             @endforeach
@@ -48,9 +48,9 @@
                                     <div class="form-group">
                                         <label>Date Format</label>
                                         <select class="form-control" name="date_format">
-                                            <option value="d-m-Y" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'd-m-Y' ? 'selected' : '' }}>DD-MM-YYYY</option>
-                                            <option value="m-d-Y" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'm-d-Y' ? 'selected' : '' }}>MM-DD-YYYY</option>
-                                            <option value="Y-m-d" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'Y-m-d' ? 'selected' : '' }}>YYYY-MM-DD</option>
+                                            <option value="d-m-Y" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'd-m-Y' ? 'selected' : '') }}>DD-MM-YYYY</option>
+                                            <option value="m-d-Y" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'm-d-Y' ? 'selected' : '') }}>MM-DD-YYYY</option>
+                                            <option value="Y-m-d" {{ (old('date_format', $settings['date_format'] ?? 'd-m-Y') == 'Y-m-d' ? 'selected' : '') }}>YYYY-MM-DD</option>
                                         </select>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                         <label>Currency</label>
                                         <select class="form-control" name="currency">
                                             @foreach(config('currencies') as $code => $currency)
-                                                <option value="{{ $code }}" {{ (old('currency', $settings['currency'] ?? 'Rs') == $code ? 'selected' : '' }}>
+                                                <option value="{{ $code }}" {{ (old('currency', $settings['currency'] ?? 'Rs') == $code ? 'selected' : '') }}>
                                                     {{ $currency['name'] }} ({{ $currency['symbol'] }})
                                                 </option>
                                             @endforeach
@@ -93,7 +93,7 @@
                                     <div class="form-group">
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input" id="low_stock_notification" 
-                                                   name="low_stock_notification" value="1" {{ (old('low_stock_notification', $settings['low_stock_notification'] ?? true) ? 'checked' : '' }}>
+                                                   name="low_stock_notification" value="1" {{ (old('low_stock_notification', $settings['low_stock_notification'] ?? true) ? 'checked' : '') }}>
                                             <label class="custom-control-label" for="low_stock_notification">Enable Low Stock Notifications</label>
                                         </div>
                                     </div>
@@ -142,4 +142,4 @@
         });
     </script>
     @endpush
-</x-app-layout>
+</x-tenant-app-layout>

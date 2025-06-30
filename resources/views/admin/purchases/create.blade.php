@@ -1,5 +1,5 @@
 
-<x-app-layout>
+<x-tenant-app-layout>
 
     @push('css')
         <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.ico') }}" />
@@ -210,4 +210,4 @@
         </script>
     @endpush
     
-</x-app-layout>
+</x-tenant-app-layout>
