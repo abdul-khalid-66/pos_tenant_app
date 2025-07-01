@@ -35,7 +35,6 @@ class TenantController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'domain' => 'required|string|max:255|unique:domains,domain',
-            'database_name' => 'required|string|max:64|unique:tenants,database_name',
             'admin_name' => 'required|string|max:255',
             'admin_email' => 'required|email|unique:users,email',
             'admin_password' => 'required|string|min:8',
@@ -51,23 +50,24 @@ class TenantController extends Controller
                 ->withInput();
         }
 
-        DB::beginTransaction();
 
+        $latestTenant = Tenant::orderBy('created_at', 'desc')->first();
 
         $tenant = Tenant::create([
+            'id'    => $latestTenant->id + 1,
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'domain' => $request->domain,
-            'database_name' => $request->database_name,
             'timezone' => $request->timezone ?? 'UTC',
             'currency' => $request->currency ?? 'Rs',
             'locale' => $request->locale ?? 'en_US',
-            'is_active' => true,
+            'email_verified_at' => now(),
+            'is_active' => false,
         ]);
 
         // Create domain
         $tenant->domains()->create([
-            'domain' => $request->domain,
+            'domain' => $request->domain . '.localhost',
             'tenant_id' => $tenant->id,
         ]);
 
@@ -85,12 +85,12 @@ class TenantController extends Controller
             'name' => $request->admin_name,
             'email' => $request->admin_email,
             'password' => Hash::make($request->admin_password),
+            'tenant_id' => $tenant->id,
             'email_verified_at' => now(),
         ]);
 
-        $admin->hasRole('admin');
+        $admin->assignRole('admin');
 
-        DB::commit();
 
         return redirect()->route('tenants.index')
             ->with('success', 'Tenant created successfully.');
@@ -213,7 +213,6 @@ class TenantController extends Controller
 
     public function showTenant(Tenant $tenant)
     {
-        $tenantData = [];
         $businessProgress = [
             'products' => Product::where('tenant_id', $tenant->id)->count(),
             'sales' => Sale::where('tenant_id', $tenant->id)->count(),
@@ -235,13 +234,6 @@ class TenantController extends Controller
             })
             ->count();
 
-        $tenantData[] = [
-            'tenant' => $tenant,
-            'businessProgress' => $businessProgress,
-            'recentSales' => $recentSales,
-            'inventoryStatus' => $inventoryStatus
-        ];
-
-        return view('tenant.dashboard', compact('tenantData'));
+        return view('tenant.tenant_info', compact('tenant', 'businessProgress', 'recentSales', 'inventoryStatus'));
     }
 }

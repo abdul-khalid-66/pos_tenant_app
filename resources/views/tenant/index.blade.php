@@ -70,7 +70,7 @@
                                             </button>
                                         </form>
                                         <a class="badge bg-secondary" data-toggle="tooltip"
-                                            data-placement="top" title="Dashboard" href="{{ route('dashboard', $tenant->id) }}">
+                                            data-placement="top" title="Dashboard" href="{{ route('tenants.dashboard',$tenant->id) }}">
                                             <i class="ri-dashboard-line mr-0"></i>
                                         </a>
                                     </div>

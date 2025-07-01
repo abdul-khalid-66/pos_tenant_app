@@ -43,7 +43,7 @@ class TenantSeeder extends Seeder
 
 
         PaymentMethod::create([
-            'tenant_id' => 1,
+            'tenant_id' => $tenant->id,
             'name' => 'Cash',
             'code' => 'CASH',
             'type' => 'cash',
@@ -52,7 +52,7 @@ class TenantSeeder extends Seeder
         ]);
 
         PaymentMethod::create([
-            'tenant_id' => 1,
+            'tenant_id' => $tenant->id,
             'name' => 'Bank Transfer',
             'code' => 'BANK',
             'type' => 'bank',
