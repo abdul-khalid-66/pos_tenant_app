@@ -52,7 +52,7 @@ Route::middleware([
 
     Route::middleware(['auth', 'verified', 'role:user|admin|super-admin'])->group(function () {
 
-        Route::get('dashboard', [BackendController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('dashboard', [BackendController::class, 'dashboard'])->name('dashboard');
         Route::get('/dashboard/financial-data', [BackendController::class, 'getFinancialData']);
         Route::get('/dashboard/recent-sales', [BackendController::class, 'getRecentSales']);
         Route::get('/dashboard/top-products', [BackendController::class, 'getTopProducts']);

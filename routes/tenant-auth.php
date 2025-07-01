@@ -43,7 +43,7 @@ Route::middleware([
             ->name('password.store');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware('tenant.auth')->group(function () {
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');
 
